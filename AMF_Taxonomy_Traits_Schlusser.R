@@ -13,7 +13,7 @@ AMF_All$SporeArea<-
 #CREATING A COPY OF THE TAXONOMIC REFERENCE AND REMOVING THE ORIGINAL FROM WORKSPACE
 AMF_All_Copy<-AMF_All
 rm(AMF_All)
-
+AMF_All_Copy[,1]<-sub("\\s","_",AMF_All_Copy[,1])
 
 #Creating a new dataframe just for AMF taxonomy, where each correct names gets repeated 
 #acccording the number of synonyms it has.
@@ -46,5 +46,3 @@ restructure<-function(old){
 #Then adding underscore between genus and species name
 
 AMF_Taxonomy<-restructure(AMF_All_Copy)
-
-AMF_Taxonomy[,1]<-sub("\\s","_",AMF_Taxonomy[,1])
