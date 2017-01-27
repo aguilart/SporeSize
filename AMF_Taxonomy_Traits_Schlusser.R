@@ -1,7 +1,7 @@
 ###########Creating a complete database based on Schlusser website######################
 
-##LOADING THE DATABASE WITH SPORE DATA
 
+##LOADING THE TAXONOMIC REFERENCE
 AMF_All<-read.csv("AMF_NamesTraitDataComplete.csv",header = TRUE,stringsAsFactors = FALSE)
 
 #UDATING THE SPORE AREA COLUMN
@@ -48,4 +48,3 @@ restructure<-function(old){
 AMF_Taxonomy<-restructure(AMF_All_Copy)
 
 AMF_Taxonomy[,1]<-sub("\\s","_",AMF_Taxonomy[,1])
-
