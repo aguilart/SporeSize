@@ -8,8 +8,6 @@ library(doBy)
 # install.packages("devtools")
 # devtools::install_github("richfitz/remake")
 # devtools::install_github("richfitz/storr")
-# 
-# remake::make()
 
 #Function to replace the given names of the study by accepeted names
 #according to Schlusser website
