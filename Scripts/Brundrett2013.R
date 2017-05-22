@@ -200,13 +200,6 @@ CommTraits2<-left_join(CommTraits[c(1:12,17:22,25:30),],dists2)
 CommTraits2$habitat<-factor(CommTraits2$habitat,
                            levels = levels(Brundrett2013_df$sites))
 
-#plot(CommTraits$bray.dist,CommTraits$CWMean)
-CommTraits2%>%
-  ggplot(aes(x=bray.dist,y=CWMean,size=IQR,col=habitat,label=habitat))+
-  geom_point(alpha=0.5)+#+scale_y_log10()+
-  geom_text(aes(label=habitat,size=0.5),hjust=1.5,vjust=1.5)+
-  theme(axis.text.x = element_text(size = 5))
-
 #Saving the info from this study
 
 CommTraitsBrundrett2013<-CommTraits2
@@ -215,3 +208,58 @@ CommTraitsBrundrett2013<-CommTraitsBrundrett2013[c(1,5,2,3,4,6,7)]
 
 rm(CommTraits,CommTraits1,CommTraits2,dists,dists2,
    transposed,Brundrett2013,Brundrett2013_df,Brundrett2013Traits)
+
+#Further trimming this data. Now I am selecting comparisons of natural sites (savana-Woodlands)
+#with disturbed sites (mines) that are close together based on the papers of Brundrett etal 
+#1996 a and b. I also creat a new column to describe the habitat type
+
+CommTraitsBrundrett2013$habitatType<-NA
+
+            CommTraitsBrundrett2013$
+              habitatType[grep("^WOOD",CommTraitsBrundrett2013$habitat)]<-"savanna-woodlands_flat"
+            
+            CommTraitsBrundrett2013$
+              habitatType[grep("^ROCK",CommTraitsBrundrett2013$habitat)]<-"savanna-woodlands_hill"  
+            
+            CommTraitsBrundrett2013$
+              habitatType[grep("^MINE",CommTraitsBrundrett2013$habitat)]<-"savanna-disturbed (waste mine)"
+
+#plot all comparisons among disturbed sites with all woodlands_flat and woodlans_hill
+
+  PlotBrundrett<-
+  CommTraitsBrundrett2013%>%
+  ggplot(aes(x=bray.dist,y=log10(CWMean),size=IQR,col=habitatType,label=habitatType))+
+  geom_point(alpha=0.5)+#+scale_y_log10()+
+  #geom_text(aes(label=habitatType),hjust=-0.3,vjust=0)+
+  theme(axis.text.x = element_text(size = 5))
+
+
+#Plot comparisons among disturbed sites and woodlands sites that are the same geographic are
+
+      #First I need to find the correct comparions,
+      #the following code (which is now just comments) was used to find them.
+          # CommTraitsBrundrett2013[
+          # which(CommTraitsBrundrett2013$Reference=="WOOD1"|
+          #         CommTraitsBrundrett2013$Reference=="WOOD6"|
+          #         CommTraitsBrundrett2013$Reference=="WOOD16"|
+          #         CommTraitsBrundrett2013$Reference=="WOOD15"|
+          #         CommTraitsBrundrett2013$Reference=="WOOD17"|
+          #         CommTraitsBrundrett2013$Reference=="WOOD20"),c(1,6)]
+          # 
+          # CommTraitsBrundrett2013[
+          #   which(CommTraitsBrundrett2013$Reference=="ROCK21"&
+          #           CommTraitsBrundrett2013$habitat=="ROCK21"),]
+
+  
+PlotBrundrett<-
+CommTraitsBrundrett2013[c(5,2,7,8,9,12,18,27,36,43,44,48,61,62,66,74,77,92,95,110,113),]%>%
+  ggplot(aes(x=bray.dist,y=log10(CWMean),size=IQR,col=Reference))+
+  geom_point(alpha=0.5)+
+  #+scale_y_log10()+
+  geom_text(aes(label=habitat,size=2000),hjust=-0.1,vjust=0)+
+  theme(axis.text.x = element_text(size = 5))+
+  #scale_colour_discrete(guide=FALSE)+
+  scale_size_continuous(guide=FALSE)+
+  scale_colour_discrete(guide=FALSE)+
+  ggtitle(paste("Undisturbed Eucalypt savanna vs", "\n",
+                "disturbed (dump mine waste) Eucalypt savanna"))

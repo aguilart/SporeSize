@@ -1,6 +1,7 @@
 library(ggplot2)
 library(tidyr)
 library(dplyr)
+library(vegan)
 
 #load file and tiding up
 
@@ -92,14 +93,15 @@ CommTraits<-merge(dists,CommTraits,by="habitat")
 CommTraits$habitat<-factor(CommTraits$habitat,
                            levels = levels(Oehl2003_df$sites))
 
-plot(CommTraits$bray.dist,CommTraits$CWMean)
-CommTraits%>%
-  ggplot(aes(x=bray.dist,y=CWMean,size=IQR,col=habitat))+
-  geom_point(alpha=0.5)#+scale_y_log10()+
-theme(axis.text.x = element_text(size = 5))
+#plot(CommTraits$bray.dist,CommTraits$CWMean)
 
 CommTraitsOehl2003<-CommTraits
 CommTraitsOehl2003$Study<-"Oehl2003"
 CommTraitsOehl2003
 
-rm(CommTraits,dists,transposed,Oehl2003,Oehl2003_df)      
+CommTraitsOehl2003%>%
+  ggplot(aes(x=bray.dist,y=CWMean,size=IQR,col=habitat))+
+  geom_point(alpha=0.5)#+scale_y_log10()+
+theme(axis.text.x = element_text(size = 5))
+
+rm(CommTraits,dists,transposed,Oehl2003_df)      

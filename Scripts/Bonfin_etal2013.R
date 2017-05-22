@@ -165,13 +165,32 @@ CommTraitsBonfin2013$Study<-"Bonfin2013"
 CommTraitsBonfin2013$Reference<-"NaturalForest"
 CommTraitsBonfin2013<-CommTraitsBonfin2013[,c(1:5,7,6)]
 
+CommTraitsBonfin2013$habitatType<-c("Native Riparian Forest",
+                                   "Sugarcane 5y ago",
+                                   "Sugarcane 10y ago",
+                                   "Sugarcane 20y ago")
+
+
 rm(Bonfin2013,Bonfin2013_df,Bonfin2013_df2,CommTraits,dists,mat)
 
+PlotBonfin<-
 CommTraitsBonfin2013%>%
-  ggplot(aes(x=bray.dist,y=CWMean,size=IQR,col=habitat))+
-  geom_point(alpha=0.5)+scale_y_log10()+
-  theme(axis.text.x = element_text(size = 5))+
-  geom_text(aes(label=habitat),hjust=-0.5,vjust=1)
+  ggplot(aes(x=bray.dist,y=log10(CWMean),size=IQR,col=habitatType))+
+  geom_point(alpha=0.5)+
+  #scale_y_log10()+
+  #theme(axis.text.x = element_text(size = 5))+
+  geom_text(aes(label=habitatType, size=2500),hjust=-0.1,vjust=0)+
+  # scale_colour_discrete(name  ="habitats",
+  #                    breaks=c("NT", "R05","R10","R20"),
+  #                    labels=c("NT= Natural", "R05=most disturbed",
+  #                             "R10= Disturbed","R20=Less disturbed"))+
+  scale_size_continuous(guide = FALSE)+
+  scale_color_discrete(guide=FALSE)+
+  ggtitle(paste("Native Riparian forest vs Riparian forest areas","\n",
+                  "that were used for sugar cane"))+
+#theme(axis.ticks.length=unit(0.5,"cm"))
+  #theme(plot.margin=unit(c(1,1,1.5,1.2),"cm"))
+  xlim(0, 1)+ylim(3.9,4.6)
 
 
 

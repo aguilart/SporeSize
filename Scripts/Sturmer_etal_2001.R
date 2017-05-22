@@ -136,19 +136,31 @@ CommTraits<-
   CommTraits$habitat<-factor(CommTraits$habitat,
                             levels = levels(prueba$Site_Type))
   
-
-  #plotting
-  CommTraits%>%
-    ggplot(aes(x=bray.dist,y=CWMean,size=IQR,col=habitat,label=habitat))+
-    geom_point(alpha=0.5)+#+scale_y_log10()+
-    geom_text(aes(label=habitat,size=0.5),hjust=1.5,vjust=1.5)+
-    theme(axis.text.x = element_text(size = 5))
-
-
   #Saving the info from this study
   
   CommTraitsSturmer2001<-CommTraits
   CommTraitsSturmer2001$Reference<-"Pristine_Forest"
   CommTraitsSturmer2001$Study<-"Sturmer2001"
   
+  #and adding some extra column for habitat type as in the other studies
+  
+  CommTraitsSturmer2001$habitatType<-c("Agroforestry","Crops_subsistence","more than 20y secondary forest",
+                                       "Pasture","Pristine Rainforest","less than 20y secondary forest")
+  
   rm(SturmerAllDataCopy,St_All,transposed,prueba,dists,CommTraits)
+  
+  #plotting
+  PlotSturmer<-
+  CommTraitsSturmer2001%>%
+    ggplot(aes(x=bray.dist,y=log10(CWMean),size=IQR,col=habitat))+
+    geom_point(alpha=0.5)+#+scale_y_log10()+
+    geom_text(aes(label=habitat,size=6000),hjust=-0.1,vjust=0)+
+    #theme(axis.text.x = element_text(size = 5))
+    scale_size_continuous(guide=FALSE)+
+    scale_color_discrete(guide=FALSE)+
+    xlim(0,0.7)+
+    ggtitle(paste("Pristine rainforest forest vs","\n",
+                  "rainforest converted to other land uses"))
+  
+  
+  

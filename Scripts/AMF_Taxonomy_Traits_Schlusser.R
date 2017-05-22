@@ -61,3 +61,7 @@ qplot(log10(AMF_All_Copy$SporeArea),
       
       )
 
+#knowing how many species we have data for
+
+length(unique(AMF_All_Copy$good.names))
+

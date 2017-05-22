@@ -299,16 +299,24 @@ CommTraits<-cbind(
         CommTraits$habitat<-factor(CommTraits$habitat,
                                    levels = levels(Oehlspecies_df$sites))
         
-        
-        CommTraits%>%
-          ggplot(aes(x=bray.dist,y=CWMean,size=IQR,col=habitat))+
-          geom_point(alpha=0.5)+#scale_y_log10()+
-          geom_text(aes(label=habitat,size=500),hjust=-0.5,vjust=-0.5)+
-          theme(axis.text.x = element_text(size = 5))
 
   CommTraitsOehl2011<-CommTraits    
   CommTraitsOehl2011$Study<-"Oehl2011"
   CommTraitsOehl2011
+  CommTraitsOehl2011$habitatType<-
   
 rm(CommTraits,dists,Oehl2010SporeAbundanceMatrix,Oehlspecies_df,transposed)      
-    
+
+  CommTraitsOehl2011$habitatType<-c(rep("Grassland",9),rep("ArableLand",12))
+  
+#Plotting only comparisons between adjacent land use types    
+
+PlotOehl<-
+CommTraitsOehl2011[c(1:6,8,9,10,13,14,15,18,19,21),]%>%
+  ggplot(aes(x=bray.dist,y=CWMean,size=IQR,col=Reference))+
+  geom_point(alpha=0.5)+#scale_y_log10()+
+  geom_text(aes(label=habitat,size=500),hjust=-0.2,vjust=-0.5)+
+  theme(axis.text.x = element_text(size = 5))+
+  scale_size_continuous(guide = FALSE)+
+  scale_colour_discrete(guide = FALSE)+
+  ggtitle(paste("Temperate grasslands vs","\n","arable land"))
