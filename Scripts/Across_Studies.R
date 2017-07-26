@@ -38,7 +38,7 @@ multiplot <- function(..., plotlist=NULL, file, cols=2, layout=NULL) {
 library(lme4)
 library(car)
 library(visreg)
-
+library(tidyverse)
 #Statistical analysis testing the effect of disturbance on Community-weighted spore size mean
 #and IQR across different studies
 
@@ -55,14 +55,14 @@ AcrossStudiesTraits<-
 #Statistical modelling of Community-weighted Spore mean along disturbance gradients
 #(measured as bray curtis distance from a reference undistrubed site per study)
 
-TraitModel1<-lmer(CWMean~bray.dist+
+TraitModel1<-lmer(log10(CWMean)~bray.dist+
                    (1|Study/Reference),data = AcrossStudiesTraits)
 
               Anova(TraitModel1)
               summary(TraitModel1)
               
               #Visualizing the model
-              visreg(TraitModel1)
+              visreg(TraitModel1,ylab="log10 CW-Mean spore size")
 
 #Statistical modelling of Community-weighted Spore mean along disturbance gradients
 #(measured as bray curtis distance from a reference undistrubed site per study)
@@ -73,4 +73,15 @@ TraitModel2<-lmer(IQR~bray.dist+
               summary(TraitModel2)
 
               #Visualizing the model
-              visreg(TraitModel2)
+              visreg(TraitModel2,ylab="CW-Interquartile range spore size")
+
+              
+######
+split(AcrossStudiesTraits,AcrossStudiesTraits$Study)
+tapply(x$IQR,x$Study,mean)
+
+tapply(AcrossStudiesTraits$CWMean,AcrossStudiesTraits$Study,mean)
+tapply(AcrossStudiesTraits$IQR,AcrossStudiesTraits$Study,mean)
+
+# lapply(split(AcrossStudiesTraits,AcrossStudiesTraits$Study),function(x){
+# x$IQR,x$habitat,mean})
