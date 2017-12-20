@@ -1,0 +1,112 @@
+### Trait data from Hart and Reader, undisturbed conditions (various papers, calculated from original data, information on disturbance in Tropical Ecology paper)
+# compiled by Jeff Powell (jeffpowell2@gmail.com)
+# Most taxa isolated from the LTMRS (including both A. spinosa isolates), should remove those from elsewhere (INVAM)
+#
+# tab-delimited
+#
+#"Genus_species": taxon
+#"clade": higher-order grouping, generally to family level (need to check this)
+#"host": plant species during experiment
+#
+### the following traits were estimated after 
+#"hyphlength": abundance in soil in m/g (think this is correct units)
+#"amf_col": percent root length colonized by AM fungus
+#"p_mg_g": mg phosphorus per g of dry shoot biomass 
+#"biomass_g": dry shoot biomass in g
+#"p_mg": estimated mg phosphorus in entire shoot
+#"soil_ergo": egosterol content of soil (ng/g soil, I think)
+#"root_ergo": egosterol content of root (ng/g root, I think)
+#"no_spores": number of AM fungal spores per gram of soil
+#
+### the following trait estimates are derived via fitting time-series data to a sigmoidal model, except for days_to_firstcol
+#
+#"a_max.hyph.fit": estimated maximum hyphal length in soil (m/g)
+#"xo_days.half.max.fit": estimated number of days to reach the maximal hyphal growth rate in soil
+#"b_slope.hyph.fit": estimated maximal hyphal growth rate in soil
+#"days_to_firstcol": number of days to detect AM fungal root colonization
+#
+"Genus_species"	"clade"	"host"	"hyphlength"	"amf_col"	"p_mg_g"	"biomass_g"	"p_mg"	"soil_ergo"	"root_ergo"	"no_spores"	"a_max.hyph.fit"	"xo_days.half.max.fit"	"b_slope.hyph.fit"	"days_to_firstcol"
+"Acaulospora_morrowiae"	"Acaulosporaceae"	"Plantago_lanceolata"	1.474	4.4	1.66	0.468	0.77688	0.504	1.072	7.298	1.499532	13.163589	19.86276	84
+"Acaulospora_morrowiae"	"Acaulosporaceae"	"Plantago_major"	1.324	1.2	1.84	0.292	0.53728	0.376	0.918	4.794	1.310455	14.163795	16.15135	84
+"Acaulospora_morrowiae"	"Acaulosporaceae"	"Poa_annua"	1.466	2.8	1.78	0.62	1.1036	0.428	1.068	5.914	1.455187	12.359401	18.16877	84
+"Acaulospora_morrowiae"	"Acaulosporaceae"	"Poa_pratensis"	1.644	9.4	2.56	0.238	0.60928	0.538	1.19	5.648	1.706332	12.456714	21.81794	54
+"Acaulospora_spinosa_1"	"Acaulosporaceae"	"Plantago_lanceolata"	1.582	15.2	1.78	0.582	1.03596	0.59	1.26	6.15	1.623295	14.89027	13.81284	19
+"Acaulospora_spinosa_1"	"Acaulosporaceae"	"Plantago_major"	1.474	12.4	1.76	0.264	0.46464	0.516	1.126	5.688	1.524444	17.544614	16.53307	19
+"Acaulospora_spinosa_1"	"Acaulosporaceae"	"Poa_annua"	1.662	16.8	1.78	0.318	0.56604	0.526	1.256	2.936	1.650594	14.298029	14.99124	19
+"Acaulospora_spinosa_1"	"Acaulosporaceae"	"Poa_pratensis"	1.732	18.4	2.12	0.266	0.56392	0.58	1.408	4.942	1.775467	12.318719	12.50873	19
+"Acaulospora_spinosa_2"	"Acaulosporaceae"	"Plantago_lanceolata"	1.778	27.4	1.98	0.486	0.96228	0.57	1.412	2.792	1.798155	15.577595	17.17377	5
+"Acaulospora_spinosa_2"	"Acaulosporaceae"	"Plantago_major"	1.664	21	1.66	0.308	0.51128	0.618	1.268	5.05	1.763428	22.7251	18.41177	26
+"Acaulospora_spinosa_2"	"Acaulosporaceae"	"Poa_annua"	1.72	24.2	1.74	0.234	0.40716	0.544	1.418	4.764	1.690269	12.419098	14.74312	5
+"Acaulospora_spinosa_2"	"Acaulosporaceae"	"Poa_pratensis"	1.912	32.8	2.6	0.244	0.6344	0.626	1.562	3.422	1.970989	11.961832	15.50464	5
+"Entrophospora_colombiana"	"Acaulosporaceae"	"Plantago_lanceolata"	1.882	34	2.2	0.532	1.1704	0.6	1.496	4.974	1.882994	18.156785	13.40379	19
+"Entrophospora_colombiana"	"Acaulosporaceae"	"Plantago_major"	1.656	25.8	2.32	0.354	0.82128	0.606	1.296	5.79	1.70252	19.973666	16.26121	19
+"Entrophospora_colombiana"	"Acaulosporaceae"	"Poa_annua"	1.796	32.8	1.86	0.366	0.68076	0.578	1.534	6.9	1.79992	15.241153	11.3986	19
+"Entrophospora_colombiana"	"Acaulosporaceae"	"Poa_pratensis"	1.998	40.2	1.94	0.278	0.53932	0.612	1.63	4.672	1.967171	13.933364	13.52295	12
+"Gigaspora_gigantea"	"Gigasporaceae"	"Plantago_lanceolata"	5.528	4.8	3.14	0.978	3.07092	2.192	0.93	6.178	5.572605	10.563645	18.28542	84
+"Gigaspora_gigantea"	"Gigasporaceae"	"Plantago_major"	4.868	0	2.72	0.61	1.6592	2.034	0.822	5.876	4.922212	13.239645	13.34324	NA
+"Gigaspora_gigantea"	"Gigasporaceae"	"Poa_annua"	5.548	1.8	2.86	2.046	5.85156	2.29	0.962	14.014	5.400911	11.466835	15.28424	84
+"Gigaspora_gigantea"	"Gigasporaceae"	"Poa_pratensis"	6.248	8.2	2.72	0.302	0.82144	2.546	1.074	6.044	6.413157	14.838931	20.73886	54
+"Gigaspora_margarita"	"Gigasporaceae"	"Plantago_lanceolata"	6.604	22.4	3.06	1.198	3.66588	2.74	1.172	5.686	6.993181	23.866957	23.47007	54
+"Gigaspora_margarita"	"Gigasporaceae"	"Plantago_major"	6.216	18.6	3.3	0.732	2.4156	2.42	1.024	6.86	7.419663	35.687603	29.97499	84
+"Gigaspora_margarita"	"Gigasporaceae"	"Poa_annua"	6.54	22.8	3.24	3.296	10.67904	2.704	1.168	8.422	6.826184	21.930892	21.23141	54
+"Gigaspora_margarita"	"Gigasporaceae"	"Poa_pratensis"	7.188	24.2	2.76	0.572	1.57872	2.838	1.228	11.194	8.736418	30.811446	35.5914	54
+"Glomus_aggregatum"	"GlomusAb"	"Plantago_lanceolata"	1.856	34	2.2	0.606	1.3332	0.566	3.06	31.404	1.820004	7.455709	12.44847	5
+"Glomus_aggregatum"	"GlomusAb"	"Plantago_major"	1.784	29.2	2	0.356	0.712	0.598	2.758	40.61	1.797435	12.707359	18.91351	5
+"Glomus_aggregatum"	"GlomusAb"	"Poa_annua"	1.816	27.4	1.88	0.416	0.78208	0.488	3.106	49.498	1.872053	8.770076	15.89014	5
+"Glomus_aggregatum"	"GlomusAb"	"Poa_pratensis"	1.978	42	2.1	0.328	0.6888	0.608	3.69	32.556	2.000556	5.644992	12.86511	5
+"Glomus_claroideum"	"GlomusB"	"Plantago_lanceolata"	1.638	18	1.8	0.578	1.0404	0.558	2.508	26.298	1.680723	7.563516	18.64102	5
+"Glomus_claroideum"	"GlomusB"	"Plantago_major"	1.48	9.4	2.36	0.316	0.74576	0.516	1.936	25.114	1.479104	11.781344	15.4842	12
+"Glomus_claroideum"	"GlomusB"	"Poa_annua"	1.624	14.8	2.2	0.336	0.7392	0.546	2.314	49.384	1.637239	8.015069	14.55241	5
+"Glomus_claroideum"	"GlomusB"	"Poa_pratensis"	1.826	19.4	2.12	0.258	0.54696	0.584	2.902	41.102	1.811241	5.490513	13.49728	5
+"Glomus_constrictum"	"GlomusAa"	"Plantago_lanceolata"	1.692	23.2	2.22	0.656	1.45632	0.524	2.726	5.92	1.672894	11.70047	14.04737	5
+"Glomus_constrictum"	"GlomusAa"	"Plantago_major"	1.632	20.2	2.32	0.35	0.812	0.562	2.438	4.764	1.622207	13.819112	15.27814	12
+"Glomus_constrictum"	"GlomusAa"	"Poa_annua"	1.724	23.2	2.06	0.358	0.73748	0.538	2.73	3.328	1.705353	10.056472	12.91938	5
+"Glomus_constrictum"	"GlomusAa"	"Poa_pratensis"	1.956	27.6	1.7	0.288	0.4896	0.624	3.154	7.354	1.924804	7.993496	15.89457	5
+"Glomus_etunicatum"	"GlomusB"	"Plantago_lanceolata"	1.764	17.4	1.5	0.518	0.777	0.594	2.75	47.266	1.85525	22.718854	21.76211	26
+"Glomus_etunicatum"	"GlomusB"	"Plantago_major"	1.536	11.6	1.9	0.366	0.6954	0.472	2.378	17.988	1.558134	18.386291	16.53041	54
+"Glomus_etunicatum"	"GlomusB"	"Poa_annua"	1.666	17	1.74	0.396	0.68904	0.61	2.702	25.32	1.706328	17.796347	19.45967	26
+"Glomus_etunicatum"	"GlomusB"	"Poa_pratensis"	1.934	22.8	2.24	0.276	0.61824	0.638	3.202	13.26	2.055301	19.866418	23.31153	26
+"Glomus_geosporum"	"GlomusAa"	"Plantago_lanceolata"	1.57	11.4	1.9	0.508	0.9652	0.59	2.09	30.938	1.581083	11.284205	15.61569	12
+"Glomus_geosporum"	"GlomusAa"	"Plantago_major"	1.384	2.4	1.58	0.368	0.58144	0.434	1.738	43.146	1.423216	16.154509	15.38931	26
+"Glomus_geosporum"	"GlomusAa"	"Poa_annua"	1.54	9.6	2.22	0.12	0.2664	0.486	1.824	28.652	1.540927	10.906437	12.26358	12
+"Glomus_geosporum"	"GlomusAa"	"Poa_pratensis"	1.736	20.2	2.36	0.25	0.59	0.518	2.424	51.47	1.70442	10.09952	11.00668	12
+"Glomus_intraradices_F"	"GlomusAb"	"Plantago_lanceolata"	1.896	30.2	2.26	0.706	1.59556	0.638	3.432	59.314	2.039055	24.942307	22.81145	26
+"Glomus_intraradices_F"	"GlomusAb"	"Plantago_major"	1.802	28.4	2	0.466	0.932	0.534	3.206	43.606	2.002708	29.47739	24.35224	26
+"Glomus_intraradices_F"	"GlomusAb"	"Poa_annua"	1.93	29.8	1.84	0.466	0.85744	0.556	3.588	29.778	2.003617	23.384766	19.11732	26
+"Glomus_intraradices_F"	"GlomusAb"	"Poa_pratensis"	2.08	38.8	2.28	0.336	0.76608	0.67	3.902	45.73	2.162039	19.611183	19.38008	26
+"Glomus_intraradices_I"	"GlomusAb"	"Plantago_lanceolata"	1.918	32.8	1.74	0.566	0.98484	0.62	3.128	42.498	1.921464	18.301236	16.67599	19
+"Glomus_intraradices_I"	"GlomusAb"	"Plantago_major"	1.664	24	1.88	0.402	0.75576	0.49	2.742	43.014	1.664415	19.452662	15.6406	26
+"Glomus_intraradices_I"	"GlomusAb"	"Poa_annua"	1.916	33.8	2.04	0.454	0.92616	0.636	3.106	51.226	1.86508	18.427527	14.96994	19
+"Glomus_intraradices_I"	"GlomusAb"	"Poa_pratensis"	1.948	38.2	2.14	0.572	1.22408	0.6	3.416	27.576	1.975788	16.289705	17.3015	19
+"Glomus_intraradices_J"	"GlomusAb"	"Plantago_lanceolata"	1.894	27.4	1.94	0.604	1.17176	0.582	3.342	41.116	1.875284	16.203232	14.49819	12
+"Glomus_intraradices_J"	"GlomusAb"	"Plantago_major"	1.692	21.4	1.78	0.462	0.82236	0.582	3.072	49.644	1.692965	17.866529	14.67576	12
+"Glomus_intraradices_J"	"GlomusAb"	"Poa_annua"	1.916	30.4	2.28	0.502	1.14456	0.612	3.402	39.722	1.908795	16.969293	14.7019	12
+"Glomus_intraradices_J"	"GlomusAb"	"Poa_pratensis"	2.084	35.2	1.72	0.292	0.50224	0.664	3.758	53.158	2.096685	13.130179	17.82206	12
+"Glomus_intraradices_K"	"GlomusAb"	"Plantago_lanceolata"	1.882	34	1.98	0.646	1.27908	0.552	3.166	51.63	1.921118	16.567307	16.94862	5
+"Glomus_intraradices_K"	"GlomusAb"	"Plantago_major"	1.79	21	2.06	0.336	0.69216	0.596	2.694	53.454	1.832363	22.17114	16.89015	5
+"Glomus_intraradices_K"	"GlomusAb"	"Poa_annua"	1.886	34.2	1.72	0.408	0.70176	0.592	3.148	58.714	1.931256	15.121301	15.37217	5
+"Glomus_intraradices_K"	"GlomusAb"	"Poa_pratensis"	1.966	39.8	2.4	0.344	0.8256	0.596	3.638	78.332	2.012328	11.40137	15.451	5
+"Glomus_intraradices_Q1"	"GlomusAb"	"Plantago_lanceolata"	2.094	54.6	2.18	0.74	1.6132	0.648	4.11	80.812	2.114139	6.787099	17.16911	5
+"Glomus_intraradices_Q1"	"GlomusAb"	"Plantago_major"	1.916	47.4	2.36	0.314	0.74104	0.632	3.63	50.744	1.933775	9.508846	14.25904	5
+"Glomus_intraradices_Q1"	"GlomusAb"	"Poa_annua"	2.144	45.2	1.84	3.006	5.53104	0.708	4.08	70.188	2.123842	8.844713	13.39742	5
+"Glomus_intraradices_Q1"	"GlomusAb"	"Poa_pratensis"	2.24	56.8	1.8	0.506	0.9108	0.686	4.644	86.916	2.210575	5.663123	13.10015	5
+"Glomus_intraradices_Q2"	"GlomusAb"	"Plantago_lanceolata"	1.702	16.2	2.04	0.566	1.15464	0.59	2.792	40.874	1.698539	13.852595	15.73629	12
+"Glomus_intraradices_Q2"	"GlomusAb"	"Plantago_major"	1.562	13.8	1.8	0.39	0.702	0.498	2.41	61.846	1.639202	19.126933	18.95399	12
+"Glomus_intraradices_Q2"	"GlomusAb"	"Poa_annua"	1.706	20.8	2.12	0.416	0.88192	0.596	2.572	39.544	1.68808	14.132881	14.57329	12
+"Glomus_intraradices_Q2"	"GlomusAb"	"Poa_pratensis"	1.874	23.4	2.04	0.286	0.58344	0.598	3.086	58.976	1.885647	13.833956	13.02691	12
+"Glomus_mosseae"	"GlomusAa"	"Plantago_lanceolata"	2	36.4	2	0.708	1.416	0.612	3.55	33.976	2.095432	23.079391	19.09216	19
+"Glomus_mosseae"	"GlomusAa"	"Plantago_major"	1.87	36	2.22	0.392	0.87024	0.576	3.216	23.388	1.901025	23.607054	14.91044	26
+"Glomus_mosseae"	"GlomusAa"	"Poa_annua"	1.936	38.4	1.78	0.51	0.9078	0.632	3.742	29.686	1.949538	19.742468	13.12676	19
+"Glomus_mosseae"	"GlomusAa"	"Poa_pratensis"	2.17	39.8	2.08	0.312	0.64896	0.702	4.112	31.072	2.171851	17.924906	14.02218	19
+"Scutellospora_calospora"	"Gigasporaceae"	"Plantago_lanceolata"	6.668	17.4	3.12	1.17	3.6504	2.718	1.098	4.34	6.728386	17.861207	16.1946	26
+"Scutellospora_calospora"	"Gigasporaceae"	"Plantago_major"	5.804	11	2.6	0.696	1.8096	2.366	0.988	4.87	5.959513	19.536661	16.66211	26
+"Scutellospora_calospora"	"Gigasporaceae"	"Poa_annua"	6.376	13	3.06	2.294	7.01964	2.606	1.132	5.572	6.395844	16.018836	13.44677	26
+"Scutellospora_calospora"	"Gigasporaceae"	"Poa_pratensis"	7.216	27.4	3.2	0.348	1.1136	2.9	1.252	6.27	7.316188	16.26636	16.10911	19
+"Scutellospora_heterogama"	"Gigasporaceae"	"Plantago_lanceolata"	7.628	40.2	3.04	1.274	3.87296	2.99	1.344	6.344	7.528484	9.404071	14.11566	5
+"Scutellospora_heterogama"	"Gigasporaceae"	"Plantago_major"	6.908	32.2	2.96	0.84	2.4864	2.778	1.154	7.696	6.910495	10.88138	16.20951	5
+"Scutellospora_heterogama"	"Gigasporaceae"	"Poa_annua"	7.584	38	2.8	4.176	11.6928	2.95	1.34	8.5	7.486246	8.770618	13.25941	5
+"Scutellospora_heterogama"	"Gigasporaceae"	"Poa_pratensis"	8.428	49.6	3.5	0.624	2.184	3.298	1.504	10.878	8.365004	5.292489	17.10745	5
+"Scutellospora_pellucida"	"Gigasporaceae"	"Plantago_lanceolata"	6.196	8.8	2.96	1.08	3.1968	2.46	1.112	6.872	6.34365	17.128092	20.46712	54
+"Scutellospora_pellucida"	"Gigasporaceae"	"Plantago_major"	5.472	6.6	2.42	0.628	1.51976	2.174	0.936	9.438	5.487275	17.056666	18.58733	84
+"Scutellospora_pellucida"	"Gigasporaceae"	"Poa_annua"	6.184	16	3.16	0.378	1.19448	2.54	1.108	4.664	6.386892	18.072192	21.76867	54
+"Scutellospora_pellucida"	"Gigasporaceae"	"Poa_pratensis"	7.076	22.8	3.44	0.556	1.91264	2.768	1.218	9.724	7.465954	19.926183	23.13094	26
