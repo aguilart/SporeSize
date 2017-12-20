@@ -6,16 +6,21 @@ This part refers to the analysis performed for the manusript "Bridging reproduct
 For conducting the analysis you need:
 
 a) the scripts: 
+
 AMF_Taxonomy_Traits_Schlusser.R  
-#(here you find how to create figure 1 and 2 (except for the tree which Stefan is in charge), it is appropriately labelled in the script the specifc code for the figures)
+(here you find how to create figure 1 and 2 (except for the tree which Stefan is in charge), it is appropriately labelled in the script the specifc code for the figures.
 
 SporeSize_SporeOutput.R 
-#(here you find how to create figure 3 and 4, it is appropriately labelled in the script the specifc code for the figures)
+(here you find how to create figure 3 and 4, it is appropriately labelled in the script the specifc code for the figures)
 
 b) the data:
+
 AMF_Spore_Database_Volume.csv
+
 ConidiaDataCompendiumAscos/ConidiaFromCompendium.csv
-"tree.for.carlos.tre
+
+tree.for.carlos.tre
+
 Jeff_SporeAbundance_undisturbed_traits.txt
 
 
