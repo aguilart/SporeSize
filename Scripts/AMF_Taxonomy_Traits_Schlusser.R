@@ -252,6 +252,9 @@ scale_x_continuous(labels = c("1","10","100","1000","10000","100000","1000000"))
 ##############Phylogenetic conservatism throughout the entire Glomeromycota########################
 ###################################################################################################
 
+#Loading the tree (provided by Stefan)
+AMF_Tree<-read.tree("tree.for.carlos.tre")
+
 #We subset spore data for species present in the tree.
 #(The phylogenetic tree includes half of the entire spore database).
 
