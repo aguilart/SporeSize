@@ -28,108 +28,76 @@ restructure<-function(old){
   return(data.frame(good.names=good.names,Synonyms=Synonyms,stringsAsFactors = FALSE))
 }
 
-##Loading file and tidyig up
-AMF_All<-read.csv("AMF_NamesTraitDataComplete.csv",header = TRUE,stringsAsFactors = FALSE)
-          AMF_All$SporeArea<-#UDATING THE SPORE AREA COLUMN
-            ((AMF_All$dim1.min+AMF_All$dim1.max)/4)*
-            ((AMF_All$dim2.min+AMF_All$dim2.max)/4)*
-            pi
 
-AMF_All_Copy<-AMF_All#CREATING A COPY
-              rm(AMF_All)
-              AMF_All_Copy[,1]<-sub("\\s","_",AMF_All_Copy[,1])
-              AMF_All_Copy[67,3]<-"Endogone_heterogama Gigaspora_heterogama Scutellospora_heterogama Fuscutata_heterogama"
+####################################################################################
+#From this point on, AMF_All_Copy correspond to the file name "AMF_Spore_Database_Volume"
+#This new file includes all the changes done up to this ponint in the code. The reason
+#for creating a new file instead of running again the whole script is because it makes
+#easier the data entry of new data on spore sizes, than trying to do do it in R
 
-              AMF_All_Copy<-AMF_All_Copy[grep("_",AMF_All_Copy$good.names),]
-              AMF_All_Copy<-AMF_All_Copy[-c(163,164),]
+AMF_All_Copy<-read.csv("AMF_Spore_Database_Volume.csv",header = T, stringsAsFactors = F)
+        
+        
+        
+        
+#UDATING THE SPORE AREA COLUMN given the previous updates in data entry
+AMF_All_Copy$SporeArea<-
+  ((AMF_All_Copy$dim1.min+AMF_All_Copy$dim1.max)/4)*
+  ((AMF_All_Copy$dim2.min+AMF_All_Copy$dim2.max)/4)*
+  pi
+
+#Caluculating Volume 
+#For this it is assumed that fungal spores are prolate spheroids, which means
+#two things. First, that the smallest diameter will be consider the "equatorial axis" and the largest
+#is the "polar axis"; second, that the there are two equatorial axis of the same length. This is 
+#important because the formula to calculate volume make distinction between the two type of axis.
+#In this way, AMF spore can be only of two types, perfect spheres (in which case equatorial and 
+#polar axis are of the same lenght), corrsponding to "globose" spores. And, spheroids similar to an
+#american football.  A morphology like a "flying soucer" is not possible following this rules.
+
+
+AMF_All_Copy$EquatorialAxis<-NaN
+          AMF_All_Copy$EquatorialAxis[
+            which(((AMF_All_Copy$dim1.min+AMF_All_Copy$dim1.max)/2)<
+              ((AMF_All_Copy$dim2.min+AMF_All_Copy$dim2.max)/2))]<-
+                ((AMF_All_Copy$dim1.min+AMF_All_Copy$dim1.max)/2)[
+                  which(((AMF_All_Copy$dim1.min+AMF_All_Copy$dim1.max)/2)<
+                          ((AMF_All_Copy$dim2.min+AMF_All_Copy$dim2.max)/2))]
+              AMF_All_Copy$EquatorialAxis[which(((AMF_All_Copy$dim1.min+AMF_All_Copy$dim1.max)/2)>
+                  ((AMF_All_Copy$dim2.min+AMF_All_Copy$dim2.max)/2))]<-
+                    ((AMF_All_Copy$dim2.min+AMF_All_Copy$dim2.max)/2)[
+                      which(((AMF_All_Copy$dim1.min+AMF_All_Copy$dim1.max)/2)>
+                              ((AMF_All_Copy$dim2.min+AMF_All_Copy$dim2.max)/2))]
+              AMF_All_Copy$EquatorialAxis[which(((AMF_All_Copy$dim1.min+AMF_All_Copy$dim1.max)/2)==
+                 ((AMF_All_Copy$dim2.min+AMF_All_Copy$dim2.max)/2))]<-
+                   ((AMF_All_Copy$dim2.min+AMF_All_Copy$dim2.max)/2)[
+                     which(((AMF_All_Copy$dim1.min+AMF_All_Copy$dim1.max)/2)==
+                             ((AMF_All_Copy$dim2.min+AMF_All_Copy$dim2.max)/2))]
+
+AMF_All_Copy$PolarAxis<-NaN
+          AMF_All_Copy$PolarAxis[
+            which(((AMF_All_Copy$dim1.min+AMF_All_Copy$dim1.max)/2)>
+                   ((AMF_All_Copy$dim2.min+AMF_All_Copy$dim2.max)/2))]<-
+                      ((AMF_All_Copy$dim1.min+AMF_All_Copy$dim1.max)/2)[
+                        which(((AMF_All_Copy$dim1.min+AMF_All_Copy$dim1.max)/2)>
+                                ((AMF_All_Copy$dim2.min+AMF_All_Copy$dim2.max)/2))]
+          AMF_All_Copy$PolarAxis[
+            which(((AMF_All_Copy$dim1.min+AMF_All_Copy$dim1.max)/2)<
+                   ((AMF_All_Copy$dim2.min+AMF_All_Copy$dim2.max)/2))]<-
+                    ((AMF_All_Copy$dim2.min+AMF_All_Copy$dim2.max)/2)[
+                      which(((AMF_All_Copy$dim1.min+AMF_All_Copy$dim1.max)/2)<
+                              ((AMF_All_Copy$dim2.min+AMF_All_Copy$dim2.max)/2))]
+          AMF_All_Copy$PolarAxis[
+            which(((AMF_All_Copy$dim1.min+AMF_All_Copy$dim1.max)/2)==
+                    ((AMF_All_Copy$dim2.min+AMF_All_Copy$dim2.max)/2))]<-
+                      ((AMF_All_Copy$dim2.min+AMF_All_Copy$dim2.max)/2)[
+                        which(((AMF_All_Copy$dim1.min+AMF_All_Copy$dim1.max)/2)==
+                                ((AMF_All_Copy$dim2.min+AMF_All_Copy$dim2.max)/2))]
+
+              which(AMF_All_Copy$EquatorialAxis>AMF_All_Copy$PolarAxis)#This should always be zero (0)
               
-              rownames(AMF_All_Copy)<-NULL
-              
-              
-#Updating and cleaning the dataset (September 2017)
-
-              
-schlusserUpdate<-read.csv("SchlusserWebSiteUpdate2017.csv",header = T, stringsAsFactors = F)  
-
-                schlusserUpdate$good.names<-sub(" ","_",schlusserUpdate$good.names)
-                schlusserUpdate$good.names<-sub("\\s","_",schlusserUpdate$good.names)
-                schlusserUpdate<-schlusserUpdate[grep("_",schlusserUpdate$good.names),]
-                
-                names(schlusserUpdate)[3]<-"Basionyms_Synonyms_Comments"
-                names(schlusserUpdate)[4]<-"Authorities"
-                names(schlusserUpdate)[5]<-"Family"
-                names(schlusserUpdate)[6]<-"Order"
-                
-                schlusserUpdate[80,3]<-"Basionym: Glomus compressum Sieverd., Oehl, Palenz., Sánchez-Castro & G.A. Silva"
-                rownames(schlusserUpdate)<-NULL
-
-                schlusserUpdate[215,1]<-"Racocetra_alborosea"
-                schlusserUpdate[207,1]<-"Racocetra_castanea"
-
-#Updating dataset using the updtade of Schlusser website from 2017
-
-old_names<-AMF_All_Copy[!AMF_All_Copy$good.names%in%schlusserUpdate$good.names,1]
-
-AMF_All_Copy[!AMF_All_Copy$good.names%in%schlusserUpdate$good.names,3]<-
-  paste(old_names,AMF_All_Copy[!AMF_All_Copy$good.names%in%schlusserUpdate$good.names,3])
-
-AMF_All_Copy[!AMF_All_Copy$good.names%in%schlusserUpdate$good.names,3]<-
-  sub(" NA$","",AMF_All_Copy[!AMF_All_Copy$good.names%in%schlusserUpdate$good.names,3])
-
-#changing some "old" to "new" accepted names according to the website update 2017
-AMF_All_Copy[!AMF_All_Copy$good.names%in%schlusserUpdate$good.names,c(1:3)]
-
-AMF_All_Copy[94,1]<-"Rhizophagus_aggregatus"
-AMF_All_Copy[99,1]<-"Diversispora_arenaria"
-AMF_All_Copy[101,1]<-"Dominikia_aurea"
-AMF_All_Copy[111,1]<-"Claroideoglomus_candidum"
-AMF_All_Copy[116,1]<-"Corymbiglomus_corymbiforme"
-AMF_All_Copy[129,1]<-"Corymbiglomus_globiferum"
-AMF_All_Copy[136,1]<-"Dominikia_indica"
-AMF_All_Copy[138,1]<-"Rhizophagus_invermaium"
-AMF_All_Copy[169,1]<-"Corymbiglomus_tortuosum"
-
-#Adding new species that have been introduced to in Schlusser Website
-
-new_species<-
-            schlusserUpdate[!schlusserUpdate$good.names%in%AMF_All_Copy$good.names,]
-            rownames(new_species)<-NULL
-          
-                        rownames(
-                        new_species[
-                        grep("nym",new_species$Basionyms_Synonyms_Comments),])
-
-            new_species$Synonyms<-NA
-            
-            new_species$Synonyms[c(11,15,24,25,28,30,33,36,37,38,39,40,41)]<-
-              c(NA,"Glomus_compressum","Glomus_bistratum","Glomus_perpusillum",
-              NA,NA,"Racocetra_intraornata","Glomus_macrocarpum","Glomus_macrocarpum",
-             "Glomus_macrocarpum",
-             "Glomus_fulvum","Glomus_fulvum",
-             "Glomus_fasciculatum")
-
-
-AMF_All_Copy<-merge(AMF_All_Copy,new_species[,c(1,3)],all = T)
-
-
-#deleting duplicated names
-
-AMF_All_Copy[grep("deserticola",AMF_All_Copy$good.names),c(1,2,13)]
-AMF_All_Copy[157,c(1,2)]<-AMF_All_Copy[290,c(1,2)]
-AMF_All_Copy[grep("heterogama",AMF_All_Copy$good.names),c(1,2,13)]
-AMF_All_Copy$Comments[79]<-"INVAM data; others: original description (Endogone heterogama) 150-202; Oehl version (Fuscutata heterogama): 165-280"
-AMF_All_Copy[grep("viscosum",AMF_All_Copy$good.names),c(1,2,13)]
-AMF_All_Copy[AMF_All_Copy$good.names=="Septoglomus_viscosum",2]<-"Glomus_viscosum Viscospora_viscosa"
-AMF_All_Copy[grep("punctata",AMF_All_Copy$good.names),c(1,2,13)]
-AMF_All_Copy<-AMF_All_Copy[-c(34,125,200,290),]
-rownames(AMF_All_Copy)<-NULL
-
-
-#Adding extra information from the website
-AMF_All_Copy<-left_join(AMF_All_Copy,schlusserUpdate,by ="good.names")
-              AMF_All_Copy<-AMF_All_Copy[c(1,2,28,31,32,4:27,30,3,29)]
-              
-rm(old_names,new_species,schlusserUpdate)
+#Now calculating volume
+AMF_All_Copy$SporeVolume<-(pi*(AMF_All_Copy$EquatorialAxis^2)*(AMF_All_Copy$PolarAxis))/6
 
 
 #Creating a new dataframe just for AMF taxonomy, where each correct names gets repeated 
@@ -138,6 +106,7 @@ rm(old_names,new_species,schlusserUpdate)
 
 AMF_Taxonomy<-restructure(AMF_All_Copy)
 
+#write.csv(AMF_All_Copy,"AMF_Spore_Database_Volume.csv")
 
 ##Plotting some histograms for describing data variation
 
@@ -155,15 +124,16 @@ qplot(log10(AMF_All_Copy$SporeArea),
       )
 
 #another form to make histograms
+library(scales)
 
 HistogramAMF<-
 AMF_All_Copy[!AMF_All_Copy$good.names== "Glomus_tenue",]%>%
   ggplot()+
-  aes(SporeArea)+
+  aes(SporeVolume)+
   geom_histogram(fill=I("blue"),
                  col=I("black"), 
                  alpha=I(.2))+
-  labs(x= expression("Spore size "*mu*"m"^{2}),y="Number of species")+
+  labs(x= expression("Spore volume "*mu*"m"^{3}),y="Number of species")+
   ggtitle(label="Variation in spore size among AMF species")+
   scale_x_log10(labels = trans_format("log10", math_format(10^.x)))+
   theme(
@@ -171,15 +141,35 @@ AMF_All_Copy[!AMF_All_Copy$good.names== "Glomus_tenue",]%>%
     axis.text=element_text(size=20), 
     axis.title = element_text(size=24))
 
+
+###
+
+AMF_All_Copy[!AMF_All_Copy$good.names== "Glomus_tenue",]%>%
+  ggplot()+
+  aes(SporeVolume)+
+  geom_density(fill=I("blue"),
+                 col=I("black"), 
+                 alpha=I(.2))+
+  labs(x= expression("Spore volume "*mu*"m"^{3}),y="Probability density")+
+  ggtitle(label="Variation in spore size among AMF species")+
+  scale_x_log10(labels = trans_format("log10", math_format(10^.x)))+
+  theme(
+    plot.title = element_text(family="serif", size=27, face="bold.italic"),
+    axis.text=element_text(size=20), 
+    axis.title = element_text(size=24))
+
+
+
 #knowing how many species we have data for
 
 length(unique(AMF_All_Copy$good.names))
 
 min(AMF_All_Copy[!AMF_All_Copy$good.names== "Glomus_tenue",]$SporeArea,na.rm = T)
 
+
 AMF_All_Copy[
-order(AMF_All_Copy$SporeArea,decreasing = F),
-c(1,13)][1:6,]
+order(AMF_All_Copy$SporeArea,decreasing = T),
+c(1,15,35)][1:6,]
 
 temporal<-
 AMF_All_Copy[
@@ -197,20 +187,22 @@ names(ConidiaDataAscos)[17]<-"good.names"
 #Boxplot
 ComparisonAMF_Ascos<-
 rbind(    AMF_All_Copy%>%
-          select(good.names,SporeArea)%>%
+          select(good.names,SporeVolume)%>%
           filter(good.names!="Glomus_tenue")%>%
           mutate(Phylum="Glomeromycota"),
         ConidiaDataAscos[grep("conidia$",ConidiaDataAscos$SporeName),]%>%
-          select(good.names,SporeArea)%>%
+          select(good.names,SporeVolume)%>%
           mutate(Phylum="Ascomycota")
         )%>%
   ggplot()+
-  aes(Phylum,log10(SporeArea),fill=Phylum)+
+  aes(Phylum,log10(SporeVolume),fill=Phylum)+
   geom_boxplot()+
-  ggtitle(label = "a) Comparison of spore area between Glomeromycota and Soil Ascomycota")+
+  ggtitle(label = "a) Comparison of spore volume between Glomeromycota and Soil Ascomycota")+
+  labs(x="Phyllum",y=expression("log10 Spore volume "*mu*"m"^{3}))+
   theme(legend.position = "none",
         plot.title = element_text(family="serif", size=12))
 
+###
 
 ggplot()+
   geom_histogram(data = AMF_All_Copy[!AMF_All_Copy$good.names== "Glomus_tenue",],
@@ -236,10 +228,61 @@ ggplot()+
 
 
 #NOTE: I need to update the entry of Sclerocystis clavispora, the size of the sporocarp
-# is given instead of the spore: AMF_All_Copy[236,1]
+# is given instead of the spore: AMF_All_Copy[253,1]
+
+
 
 names(AMF_All_Copy)
 
 #The number of AMF species I am processing is 243
 #(from which I got AMF spore data at this moment). This can be obtained by:
 length(which(!is.na(AMF_All_Copy$SporeArea)))
+
+
+##
+
+ConidiaDataAscos$EquatorialAxis<-NaN
+ConidiaDataAscos$EquatorialAxis[
+  which(((ConidiaDataAscos$SporeDim1_min+ConidiaDataAscos$SporeDim1_max)/2)<
+          ((ConidiaDataAscos$SporeDim2_min+ConidiaDataAscos$SporeDim2_max)/2))]<-
+  ((ConidiaDataAscos$SporeDim1_min+ConidiaDataAscos$SporeDim1_max)/2)[
+    which(((ConidiaDataAscos$SporeDim1_min+ConidiaDataAscos$SporeDim1_max)/2)<
+            ((ConidiaDataAscos$SporeDim2_min+ConidiaDataAscos$SporeDim2_max)/2))]
+ConidiaDataAscos$EquatorialAxis[which(((ConidiaDataAscos$SporeDim1_min+ConidiaDataAscos$SporeDim1_max)/2)>
+                                        ((ConidiaDataAscos$SporeDim2_min+ConidiaDataAscos$SporeDim2_max)/2))]<-
+  ((ConidiaDataAscos$SporeDim2_min+ConidiaDataAscos$SporeDim2_max)/2)[
+    which(((ConidiaDataAscos$SporeDim1_min+ConidiaDataAscos$SporeDim1_max)/2)>
+            ((ConidiaDataAscos$SporeDim2_min+ConidiaDataAscos$SporeDim2_max)/2))]
+ConidiaDataAscos$EquatorialAxis[which(((ConidiaDataAscos$SporeDim1_min+ConidiaDataAscos$SporeDim1_max)/2)==
+                                        ((ConidiaDataAscos$SporeDim2_min+ConidiaDataAscos$SporeDim2_max)/2))]<-
+  ((ConidiaDataAscos$SporeDim2_min+ConidiaDataAscos$SporeDim2_max)/2)[
+    which(((ConidiaDataAscos$SporeDim1_min+ConidiaDataAscos$SporeDim1_max)/2)==
+            ((ConidiaDataAscos$SporeDim2_min+ConidiaDataAscos$SporeDim2_max)/2))]
+
+
+
+
+ConidiaDataAscos$PolarAxis<-NaN
+ConidiaDataAscos$PolarAxis[
+  which(((ConidiaDataAscos$SporeDim1_min+ConidiaDataAscos$SporeDim1_max)/2)>
+          ((ConidiaDataAscos$SporeDim2_min+ConidiaDataAscos$SporeDim2_max)/2))]<-
+  ((ConidiaDataAscos$SporeDim1_min+ConidiaDataAscos$SporeDim1_max)/2)[
+    which(((ConidiaDataAscos$SporeDim1_min+ConidiaDataAscos$SporeDim1_max)/2)>
+            ((ConidiaDataAscos$SporeDim2_min+ConidiaDataAscos$SporeDim2_max)/2))]
+ConidiaDataAscos$PolarAxis[
+  which(((ConidiaDataAscos$SporeDim1_min+ConidiaDataAscos$SporeDim1_max)/2)<
+          ((ConidiaDataAscos$SporeDim2_min+ConidiaDataAscos$SporeDim2_max)/2))]<-
+  ((ConidiaDataAscos$SporeDim2_min+ConidiaDataAscos$SporeDim2_max)/2)[
+    which(((ConidiaDataAscos$SporeDim1_min+ConidiaDataAscos$SporeDim1_max)/2)<
+            ((ConidiaDataAscos$SporeDim2_min+ConidiaDataAscos$SporeDim2_max)/2))]
+ConidiaDataAscos$PolarAxis[
+  which(((ConidiaDataAscos$SporeDim1_min+ConidiaDataAscos$SporeDim1_max)/2)==
+          ((ConidiaDataAscos$SporeDim2_min+ConidiaDataAscos$SporeDim2_max)/2))]<-
+  ((ConidiaDataAscos$SporeDim2_min+ConidiaDataAscos$SporeDim2_max)/2)[
+    which(((ConidiaDataAscos$SporeDim1_min+ConidiaDataAscos$SporeDim1_max)/2)==
+            ((ConidiaDataAscos$SporeDim2_min+ConidiaDataAscos$SporeDim2_max)/2))]
+
+which(ConidiaDataAscos$EquatorialAxis>ConidiaDataAscos$PolarAxis)#This should always be zero (0)
+
+#Now calculating volume
+ConidiaDataAscos$SporeVolume<-(pi*(ConidiaDataAscos$EquatorialAxis^2)*(ConidiaDataAscos$PolarAxis))/6
