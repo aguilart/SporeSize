@@ -220,6 +220,10 @@ ComparisonAMF_Ascos<-
               ggplot()+
               aes(Phylum,log10(SporeVolume),fill=Phylum)+
               geom_boxplot()+
+              # to change to a violin plot with points, comment out the 'geom_boxplot()+' line above and remove comments on the two lines below
+              # try modifying the arguments to make the plot look the way that you like them
+              # geom_violin(alpha=0.5, draw_quantiles=0.5)+
+              # geom_jitter(width=0.1, size=0.5)+
               ggtitle(label = "a) Comparison of spore volume between Glomeromycota and Soil Ascomycota")+
               labs(x="Phyllum",y=expression("log10 Spore volume "*mu*"m"^{3}))+
               theme(legend.position = "none",
