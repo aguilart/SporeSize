@@ -38,7 +38,8 @@ restructure<-function(old){
 #loading file and updating entries
 
 AMF_All_Copy<-read.csv("AMF_Spore_Database_Volume.csv",header = T, stringsAsFactors = F)
-        
+
+
 #UDATING THE SPORE AREA COLUMN given the previous updates in data entry
 AMF_All_Copy$SporeArea<-
   ((AMF_All_Copy$dim1.min+AMF_All_Copy$dim1.max)/4)*
@@ -97,13 +98,45 @@ AMF_All_Copy$PolarAxis<-NaN
               
             #Now calculating volume
             AMF_All_Copy$SporeVolume<-(pi*(AMF_All_Copy$EquatorialAxis^2)*(AMF_All_Copy$PolarAxis))/6
+            
+            #Removing the "Endogone" entries. All the species of this old genera are synonimized to other
+            #names. These synonims are the ones that have the actual spore data and, according to the 
+            #Shussler website, they are the valid names. Apparently, the reason why Schussler kept them
+            #is because they are synonimized based only in morphological characters (no DNA available)
+            
+            AMF_All_Copy<-AMF_All_Copy[-c(112:116),]
+            rownames(AMF_All_Copy)<-NULL
 
+            #Fixing some typos in the synonyms category
+            # AMF_All_Copy$Synonyms[
+            # grep("[a-z] [a-z]",AMF_All_Copy$Synonyms)]
+            
+            AMF_All_Copy$Synonyms[which(
+              AMF_All_Copy$Synonyms=="Endogone_macrocarpa_var_geospora Glomus macrocarpum_var_geosporum Glomus_geosporum"
+            )]<-"Endogone_macrocarpa_var_geospora Glomus_macrocarpum_var_geosporum Glomus_geosporum"
 
+            AMF_All_Copy$Synonyms[which(
+              AMF_All_Copy$Synonyms=="Endogone_macrocarpa  Paurocotylis fulva Endogone pampaloniana Endogone_nuda"
+            )]<-"Endogone_macrocarpa Paurocotylis_fulva Endogone_pampaloniana Endogone_nuda"
+            
+            
+            AMF_All_Copy$Synonyms[which(
+              AMF_All_Copy$Synonyms=="Endogone_macrocarpa_var_ caledonia Glomus_caledonium"
+            )]<-"Endogone_macrocarpa_var_caledonia Glomus_caledonium"
+            
+            AMF_All_Copy$Synonyms[grep("intraradices",AMF_All_Copy$Synonyms)]<-"Glomus_intraradices Rhizoglomus_intraradices"
+            AMF_All_Copy$Synonyms[grep("fasciculat",AMF_All_Copy$Synonyms)]<-"Endogone_fasciculata Glomus_fasciculatum Endogone_arenacea Rhizoglomus_fasciculatum"
+            AMF_All_Copy$Synonyms[grep("microaggr",AMF_All_Copy$good.names)]<-"Rhizoglomus_microaggregatum"
+            AMF_All_Copy$Synonyms[grep("claru",AMF_All_Copy$Synonyms)]<-"Glomus_clarum Rhizoglomus_clarum"
+            AMF_All_Copy$Synonyms[grep("natal",AMF_All_Copy$good.names)]<-"Rhizoglomus_natalensis"
+            
 #Creating a new dataframe just for AMF taxonomy, where each correct names gets repeated 
 #acccording the number of synonyms it has. In order to do this, Will created the function
 # "restructure" (see above)
 
 AMF_Taxonomy<-restructure(AMF_All_Copy)
+
+
 
 
 #####################################################################################################
@@ -209,27 +242,87 @@ ConidiaDataAscos<-read.csv("ConidiaDataCompendiumAscos/ConidiaFromCompendium.csv
 ###############
 
 #This figure correspond to Fig 1a in the manucript
-ComparisonAMF_Ascos<-
-    rbind(AMF_All_Copy%>%
+Fungi_violin<-
+    rbind(
+    AMF_All_Copy%>%
             select(good.names,SporeVolume)%>%
+            rename(offsrpingSize=SporeVolume)%>%
             filter(good.names!="Glomus_tenue")%>%
-            mutate(Phylum="Glomeromycota"),
+            mutate(Taxa="Glomeromycotina")%>%
+            #mutate(offsrpingSize=offsrpingSize/((10000)^3))%>%
+            mutate(Organism="Microorganism"),
+                  
           ConidiaDataAscos[grep("conidia$",ConidiaDataAscos$SporeName),]%>%
             select(good.names,SporeVolume)%>%
-            mutate(Phylum="Ascomycota"))%>%
+            rename(offsrpingSize=SporeVolume)%>%
+            mutate(Taxa="Ascomycota")%>%
+            #mutate(offsrpingSize=offsrpingSize/((10000)^3))%>%
+            mutate(Organism="Microorganism"))%>%      
+                    
+                    ggplot()+
+                    aes(Taxa,offsrpingSize,fill=Taxa)+
+                    geom_jitter(size=0.5, width = 0.3,alpha=1)+
+                    geom_violin(alpha=0.8, draw_quantiles=c(0.25, 0.5, 0.75))+
+                    #facet_grid(. ~ Organism, scales = "free")+
+                    scale_y_log10(labels = scales::trans_format("log10", scales::math_format(10^.x)))+
+                    labs(y=expression("Spore size ("*mu*"m³)"))+
+                    theme(title = element_text(size = 25),
+                          axis.title.x=element_blank(),
+                          axis.text.x = element_text(size = 20),
+                          axis.text.y = element_text(size = 20),
+                          strip.text.x = element_text(size = 20),
+                          legend.position = "none")
+          
+          
+
+plants_violin<-          
+          kewData%>%
+            select(species,value)%>%
+            rename(good.names=species, offsrpingSize=value)%>%
+            mutate(Taxa="Angiosperms")%>%
+            mutate(Organism="Macroorganism")%>%
+            
+            ggplot()+
+            aes(Taxa,offsrpingSize,fill=Taxa)+
+            geom_jitter(size=0.5, width = 0.3,alpha=0.1)+
+            geom_violin(alpha=0.8, draw_quantiles=c(0.25, 0.5, 0.75),fill="purple")+
+            #facet_grid(. ~ Organism, scales = "free")+
+            scale_y_log10(labels = scales::trans_format("log10", scales::math_format(10^.x)))+
+            labs(x="Taxa",y=expression("Seed size (mg)"))+
+            theme(title = element_text(size = 25),
+                  axis.title.x=element_blank(),
+                  axis.text.x = element_text(size = 20),
+                  axis.text.y = element_text(size = 20),
+                  strip.text.x = element_text(size = 20),
+                  legend.position = "none")
+          
+
+Birds_violin<-          
+          BirdEgg%>%
+            select(Species,Volume)%>%
+            rename(good.names=Species,offsrpingSize=Volume)%>%
+            mutate(Taxa="Birds")%>%
+            mutate(Organism="Macroorganism")%>%
               ggplot()+
-              aes(Phylum,log10(SporeVolume),fill=Phylum)+
-              geom_boxplot()+
-              # to change to a violin plot with points, comment out the 'geom_boxplot()+' line above and remove comments on the two lines below
-              # try modifying the arguments to make the plot look the way that you like them
-              # geom_violin(alpha=0.5, draw_quantiles=c(0.25, 0.5, 0.75))+
-              # geom_jitter(width=0.3, size=0.5)+
-              ggtitle(label = "a) Comparison of spore volume between Glomeromycota and Soil Ascomycota")+
-              labs(x="Phyllum",y=expression("log10 Spore volume "*mu*"m"^{3}))+
-              theme(legend.position = "none",
-                    plot.title = element_text(family="serif", size=12))
+              aes(Taxa,offsrpingSize,fill=Taxa)+
+              geom_jitter(size=0.5, width = 0.3,alpha=0.8)+
+              geom_violin(alpha=0.8, draw_quantiles=c(0.25, 0.5, 0.75),fill="dark green")+
+              #facet_grid(. ~ Organism, scales = "free")+
+                    scale_y_log10(labels = scales::trans_format("log10", scales::math_format(10^.x)))+
+                    labs(x="Taxa",y=expression("Egg size (cm³)"))+
+                    theme(title = element_text(size = 25),
+                          axis.title.x=element_blank(),
+                          axis.text.x = element_text(size = 20),
+                          axis.text.y = element_text(size = 20),
+                          strip.text.x = element_text(size = 20),
+                          legend.position = "none")
 
-
+grid.newpage()
+grid.draw(cbind(ggplotGrob(Fungi_violin),
+  ggplotGrob(plants_violin),
+  ggplotGrob(Birds_violin),
+  size = "last"))
+              
 #Alternatively as histograms
 ggplot()+
 geom_histogram(data = AMF_All_Copy[!AMF_All_Copy$good.names== "Glomus_tenue",],
@@ -294,28 +387,65 @@ AMF_SubsetInPhyloy$Family<-factor(AMF_SubsetInPhyloy$Family,
                                              "sequences cluster inDiversisporaceae",
                                              "Entrophosporaceae"))
 
+write.csv(
+AMF_SubsetInPhyloy[-grep("glomoid",AMF_SubsetInPhyloy$Comments),c(1,35)],
+"SporeVolume_Ambisporaceae_acaulosporoid.csv",row.names = F)
 
+write.csv(
+  AMF_SubsetInPhyloy[-grep("acaulosporoid",AMF_SubsetInPhyloy$Comments),c(1,35)],
+  "SporeVolume_Ambisporaceae_glomoid.csv",row.names = F)
+
+names(AMF_SubsetInPhyloy)
 #Testing for phylogenetic conservatism                
 phylosig(AMF_Tree,SporeVolumeAll,method = "lambda",test = T)
 
 #This is the boxplot accompanying the phylogenetic tree in Figure 2 in the manuscript
-AMF_SubsetInPhyloy%>%
-  ggplot()+
-  aes(log10(SporeVolume))+
-  geom_histogram(fill=I("blue"),
-                 col=I("black"),
-                 alpha=I(.2))
+# AMF_SubsetInPhyloy%>%
+#   ggplot()+
+#   aes(log10(SporeVolume))+
+#   geom_histogram(fill=I("blue"),
+#                  col=I("black"),
+#                  alpha=I(.2))
 
+#############
+##Figure 2b##
+#############
+#[-c(45,74,75,83,99),]
+
+AMF_SubsetInPhyloy%>%
+  filter(Family!="")%>%
+  filter(Family!="Entrophosporaceae")%>%
+  filter(Family!="sequences cluster inDiversisporaceae")%>%
+  ggplot()+
+  aes(x=Family,y=SporeVolume,fill=Family)+
+  geom_jitter(alpha=0.5)+
+  geom_violin(alpha=0.5)+
+  labs(x= "Family", y=expression("Spore size"~"("*mu*m^3*")"))+
+  scale_y_log10(breaks=c(10^4,10^5,10^6,10^7),
+    labels = scales::trans_format("log10", scales::math_format(10^.x)))+  
+  theme(title = element_text(size = 25),
+    axis.text.x = element_text(angle=0,vjust = 0.7,size=20),
+        axis.text.y = element_text(size = 20),
+        axis.line = element_line(color = "black"),
+        #strip.text.x = element_text(size = 20),
+        legend.position = "none"#,panel.background = element_blank()
+    )+
+        coord_flip()
+  
+unique(AMF_SubsetInPhyloy$Family)
+
+
+
+  #ggtitle(label = "a) Comparison of Offspring size (volume) between Glomeromycota and other taxa")+
+  labs(x="Taxa",y=expression("Offspring size (cm³)"))+
+  theme(title = element_text(size = 25),
+        axis.text.x = element_text(size = 20),
+        axis.text.y = element_text(size = 20),
+        strip.text.x = element_text(size = 20),
+        legend.position = "none")
 
 ############################### LEFTOVERS #####################################################
 
-# AMF_SubsetInPhyloy[-c(45,74,75,83,99),]%>%
-#   ggplot()+
-#   aes(x=Family,y=log10(SporeVolume))+
-#   geom_boxplot()+
-#   theme(axis.text.x = element_text(angle=90,vjust = 0.7,size=15),
-#         axis.text.y = element_text(size = 20))+
-#   coord_flip()
 # 
 # 
 # AMF_SubsetInPhyloy%>%
@@ -416,3 +546,46 @@ AMF_SubsetInPhyloy%>%
 #     order(AMF_All_Copy$SporeArea,decreasing = F),
 #     c(1,13)]
 # rownames(temporal)<-NULL
+  
+#AMF_All_Copy[grep("Ambispora",AMF_All_Copy$good.names),c(1,6:13,30)]  
+  
+  
+      rbind(AMF_All_Copy%>%
+            select(good.names,SporeVolume)%>%
+            rename(offsrpingSize=SporeVolume)%>%
+            filter(good.names!="Glomus_tenue")%>%
+            mutate(Taxa="Glomeromycotina")%>%
+            mutate(offsrpingSize=offsrpingSize/((10000)^3))%>%
+            mutate(Organism="Microorganism"),
+
+          ConidiaDataAscos[grep("conidia$",ConidiaDataAscos$SporeName),]%>%
+            select(good.names,SporeVolume)%>%
+            rename(offsrpingSize=SporeVolume)%>%
+            mutate(Taxa="Ascomycota")%>%
+            mutate(offsrpingSize=offsrpingSize/((10000)^3))%>%
+            mutate(Organism="Microorganism"),
+          kewData%>%
+            select(species,value)%>%
+            rename(good.names=species, offsrpingSize=value)%>%
+            mutate(Taxa="Angiosperms")%>%
+            mutate(Organism="Macroorganism"),
+          BirdEgg%>%
+            select(Species,Volume)%>%
+            rename(good.names=Species,offsrpingSize=Volume)%>%
+            mutate(Taxa="Birds")%>%
+            mutate(Organism="Macroorganism"))%>%
+    
+    ggplot()+
+    aes(Taxa,offsrpingSize,fill=Taxa)+
+    geom_jitter(size=0.5, width = 0.3,alpha=0.2)+
+    geom_violin(alpha=0.8, draw_quantiles=c(0.25, 0.5, 0.75))+
+    facet_grid(. ~ Organism, scales = "free")+
+    scale_y_log10(labels = scales::trans_format("log10", scales::math_format(10^.x)))+
+    labs(x="Taxa",y=expression("Offspring size"))+
+    theme(title = element_text(size = 25),
+          axis.title.x=element_blank(),
+          axis.text.x = element_text(size = 15),
+          axis.text.y = element_text(size = 20),
+          strip.text.x = element_text(size = 20),
+          legend.position = "none")
+ 
