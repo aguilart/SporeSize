@@ -79,17 +79,26 @@ Jeff_AMF_Traits<-read.table("Jeff_SporeAbundance_undisturbed_traits.txt",header 
 #This one correspond to Figure 3a in the Manuscript
 Jeff_Traits_Summary%>%
   ggplot()+
-  aes(x=log10(SporeMass),y=log10(no_spores),
-      color=host)+
+  aes(x=SporeMass,y=no_spores,
+      color=host,size=2)+
   geom_point()+
+  scale_y_log10(breaks=c(10^0.5,10^1,10^1.5),
+  labels = scales::trans_format("log10", scales::math_format(10^.x)))+
+  scale_x_log10(
+    labels = scales::trans_format("log10", scales::math_format(10^.x)))+
   #geom_text(aes(label=good.names))+
-  labs(x="Spore mass (ug) [log scale]",
-      y=expression(Number~spores~fungus^{-1}~"[log scale]"))+
+  labs(x=expression("Spore mass"~"("*mu*g*")"),
+      y=expression(Number~spores~fungus^{-1}))+
   ggtitle(label="Spore output vs. spore size",
           subtitle = "slope= -0.6 (C.I= -0.81,-0.50), r2 = 0.13  (p = 0.004)" )+
   geom_abline(slope = -0.64,intercept = 1.07)+
   #geom_abline(slope = -0.23,intercept = 1.07,lty=2)+
-  geom_abline(slope=-1,intercept = 1.07,lty=2)#+
+  geom_abline(slope=-1,intercept = 1.07,lty=2)+
+  theme(title = element_text(size = 25),
+        axis.text.x = element_text(size = 20),
+        axis.text.y = element_text(size = 20),
+        legend.text = element_text(size=10),
+        legend.position = "none")
   # scale_y_continuous(limits = c(0,2.5))+
   # scale_x_continuous(limits = c(-1.5,1.5))
   
@@ -146,17 +155,27 @@ Jeff_Traits_Summary%>%
 #This one correspond to figure 3b in the manuscript
   Jeff_Traits_Summary%>%
     ggplot()+
-    aes(x=log10(SporeMass),
-        y=log10(no_spores/total_fungalBiomass),color=host)+
+    aes(x=SporeMass,
+        y=(no_spores/total_fungalBiomass),color=host,size=2)+
     geom_point()+
+    scale_y_log10(breaks=c(10^-1.5,10^-1,10^-0.5),
+    labels = scales::trans_format("log10", scales::math_format(10^.x)))+
+    scale_x_log10(
+    labels = scales::trans_format("log10", scales::math_format(10^.x)))+
     #geom_text(aes(label=good.names))+
-    labs(x="Spore mass (ug) [log scale]",
-         y=expression(Number~spores~gram^{-1}~fungus~"[log scale]"))+
+    labs(x=expression("Spore mass"~"("*mu*g*")"),
+         y=expression(Number~spores~(gram.fungus)^{-1}))+
     ggtitle(label="Spore output per gram of fungus vs. spore size",
             subtitle = "slope= -0.59 (CI=-0.75,-0.47), r2= 0.2 (p=0.0002)")+
     geom_abline(slope = -0.59,intercept = -0.94)+
     #geom_abline(slope = -0.23,intercept = 1.07,lty=2)+
-    geom_abline(slope=-1,intercept = -0.94,lty=2)
+    geom_abline(slope=-1,intercept = -0.94,lty=2)+
+    theme(title = element_text(size = 25),
+          axis.text.x = element_text(size = 20),
+          axis.text.y = element_text(size = 20),
+          legend.text = element_text(size=10)#,
+          #legend.position = "none"
+          )
   
   #normal regression
   confint(
@@ -203,17 +222,25 @@ Jeff_Traits_Summary%>%
   #This one correspond to figure 3c in the manuscript
   Jeff_Traits_Summary%>%
     ggplot()+
-    aes(x=log10(SporeMass),
-        y=log10(Total_MassForSpores),
-        color=host)+
+    aes(x=SporeMass,
+        y=Total_MassForSpores,
+        color=host,size=2)+
     geom_point()+
+    scale_y_log10(breaks=c(10^0,10^0.5,10^1,10^1.5,10^2),
+    labels = scales::trans_format("log10", scales::math_format(10^.x)))+
+    scale_x_log10(
+      labels = scales::trans_format("log10", scales::math_format(10^.x)))+
     #geom_text(aes(label=good.names))+
-    labs(x="Spore Mass (ug)",
-         y= expression(Mass~allocated~to~spore~production~(ug)~gram^{-1}~fungus))+
-    ggtitle(label = "Mass allocated to reproduction per fungus vs spore size",
+    labs(x=expression("Spore mass"~"("*mu*g*")"),
+         y= expression(Mass~allocated~to~spore~production~"("*mu*g*")"))+
+    ggtitle(label = "Mass allocated to reproduction vs. spore size",
             subtitle ="slope= 0.97 (CI=0.82,1.14), r2=0.62 (p<<0.001)" )+
     #geom_abline(slope=0.76, intercept = 1.07)+
-    geom_abline(slope = 0.97,intercept = 1.08,lty=2)
+    geom_abline(slope = 0.97,intercept = 1.08,lty=2)+
+    theme(title = element_text(size = 25),
+          axis.text.x = element_text(size = 20),
+          axis.text.y = element_text(size = 20),
+          legend.position =  "none")
   
   #Regression analysis
   confint(
@@ -272,17 +299,22 @@ Jeff_Traits_Summary%>%
   #This one correspond to figure 4a in the manuscript 
   Jeff_Traits_Summary%>%
     ggplot()+
-    aes(y=log10(no_spores),
-        x=log10(total_fungalBiomass),
-        color=host)+
+    aes(y=no_spores,
+        x=total_fungalBiomass,
+        color=host,size=2)+
     geom_point()+
-    #geom_text(aes(label=good.names))+
-    labs(x="Fungal biomass (ug)",y="Spore output")+
+    scale_y_log10(breaks=c(10^0.5,10^1,10^1.5),
+    labels = scales::trans_format("log10", scales::math_format(10^.x)))+
+    scale_x_log10(breaks=c(10^1.7,10^1.8,10^1.9,10^2.0,10^2.1),
+      labels = scales::trans_format("log10", scales::math_format(10^.x)))+
+    labs(x=expression("Total fungal mass"~"("*mu*g*")"),
+         y=expression(Number~spores~fungus^{-1}))+
     ggtitle(label="Spore output vs Fungal biomass",
             subtitle = "r2= 0.13 (p=0.0035)")+
     theme(title = element_text(size = 25),
           axis.text.x = element_text(size = 20),
-          axis.text.y = element_text(size = 20))
+          axis.text.y = element_text(size = 20),
+          legend.position = "none")
   
   summary.lm(
     lm(log10(no_spores)~
@@ -292,6 +324,7 @@ Jeff_Traits_Summary%>%
   summary(
     sma(no_spores ~ total_fungalBiomass,
         data = Jeff_Traits_Summary, log = "xy"))
+  
   
   #Results:
   # Coefficients:
@@ -317,18 +350,22 @@ Jeff_Traits_Summary%>%
 #This one correspond to Figure 4b in the manuscript
   Jeff_Traits_Summary%>%
     ggplot()+
-    aes(y=log10(total_fungalBiomass),
-        x=log10(SporeMass),
-        color=host)+
+    aes(x=total_fungalBiomass,
+        y=SporeMass,
+        color=host,size=2)+
     geom_point()+
-    #geom_text(aes(label=good.names))+
-    labs(x="Total fungal biomass (ug)",y="Spore mass (ug)")+
+    scale_y_log10(breaks=c(10^-1,10^-0.5,10^0,10^0.5,10^1),
+                  labels = scales::trans_format("log10", scales::math_format(10^.x)))+
+    scale_x_log10(breaks=c(10^1.7,10^1.8,10^1.9,10^2.0,10^2.1),
+                  labels = scales::trans_format("log10", scales::math_format(10^.x)))+
+    labs(x=expression("Total fungal mass"~"("*mu*g*")"),
+         y=expression("Spore mass"~"("*mu*g*")"))+
     ggtitle(label="Spore mass vs fungal biomass",
             subtitle = "r2=0.03 (p=0.14)")+
   theme(title = element_text(size = 25),
         axis.text.x = element_text(size = 20),
         axis.text.y = element_text(size = 20),
-        legend.text = element_text(size=10))
+        legend.position =  "none")
   
   summary.lm(
     lm(log10(SporeMass)~
